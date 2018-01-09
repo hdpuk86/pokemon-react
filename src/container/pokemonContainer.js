@@ -1,15 +1,17 @@
 import React from 'react';
-import PokemonSelector from '../components/PokemonSelector';
-import PokemonDetail from '../components/PokemonDetail';
+import PokemonSelector from '../components/pokemonSelector';
+import PokemonDetail from '../components/pokemonDetail';
 
 class PokemonContainer extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       pokemonz: [],
-      selectedPokemon: null
+      pokemonURL: ""
     }
-  }
+    this.handleSelectedPokemon = this.handleSelectedPokemon.bind(this);
+  };
+
   componentDidMount(){
     const url = "https://pokeapi.co/api/v2/pokemon/?limit=151";
     const request = new XMLHttpRequest();
@@ -22,13 +24,20 @@ class PokemonContainer extends React.Component {
       }
     })
     request.send();
-  }
+  };
+
+  handleSelectedPokemon(index){
+    this.setState({pokemonURL: this.state.pokemonz[index].url});
+  };
+
   render(){
+    // console.log(this.state.selectedPokemon);
+
     return(
       <div>
         <h1>Pokemon</h1>
-        <PokemonSelector />
-        <PokemonDetail />
+        <PokemonSelector pokemonz={this.state.pokemonz} onSelect={this.handleSelectedPokemon}/>
+        <PokemonDetail pokemonURL={this.state.pokemonURL}/>
       </div>
     )
   }
